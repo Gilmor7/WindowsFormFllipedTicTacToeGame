@@ -29,29 +29,29 @@ namespace WindowsFormsFlippedTicTacToe
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonStart = new System.Windows.Forms.Button();
+            this.ButtonStart = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBoxPlayer2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.numericUpDownRows = new System.Windows.Forms.NumericUpDown();
+            this.textBoxPlayer2 = new System.Windows.Forms.TextBox();
+            this.textBoxPlayer1 = new System.Windows.Forms.TextBox();
+            this.numericUpDownCols = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRows)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCols)).BeginInit();
             this.SuspendLayout();
             // 
-            // buttonStart
+            // ButtonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(24, 242);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(255, 33);
-            this.buttonStart.TabIndex = 5;
-            this.buttonStart.Text = "Start!";
-            this.buttonStart.UseVisualStyleBackColor = true;
+            this.ButtonStart.Location = new System.Drawing.Point(24, 242);
+            this.ButtonStart.Name = "ButtonStart";
+            this.ButtonStart.Size = new System.Drawing.Size(255, 33);
+            this.ButtonStart.TabIndex = 5;
+            this.ButtonStart.Text = "Start!";
+            this.ButtonStart.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -70,7 +70,6 @@ namespace WindowsFormsFlippedTicTacToe
             this.label2.Size = new System.Drawing.Size(64, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Player 1:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // checkBoxPlayer2
             // 
@@ -81,6 +80,7 @@ namespace WindowsFormsFlippedTicTacToe
             this.checkBoxPlayer2.TabIndex = 1;
             this.checkBoxPlayer2.Text = "Player 2:";
             this.checkBoxPlayer2.UseVisualStyleBackColor = true;
+            this.checkBoxPlayer2.CheckedChanged += new System.EventHandler(this.checkBoxPlayer2_CheckedChanged);
             // 
             // label3
             // 
@@ -109,61 +109,95 @@ namespace WindowsFormsFlippedTicTacToe
             this.label5.TabIndex = 6;
             this.label5.Text = "Cols:";
             // 
-            // numericUpDown1
+            // numericUpDownRows
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(93, 178);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(55, 22);
-            this.numericUpDown1.TabIndex = 3;
+            this.numericUpDownRows.Location = new System.Drawing.Point(93, 178);
+            this.numericUpDownRows.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownRows.Minimum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownRows.Name = "numericUpDownRows";
+            this.numericUpDownRows.ReadOnly = true;
+            this.numericUpDownRows.Size = new System.Drawing.Size(55, 22);
+            this.numericUpDownRows.TabIndex = 3;
+            this.numericUpDownRows.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownRows.ValueChanged += new System.EventHandler(this.numericUpDown_ValueChanged);
             // 
-            // textBox1
+            // textBoxPlayer2
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(137, 88);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(142, 22);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "[Computer]";
+            this.textBoxPlayer2.Enabled = false;
+            this.textBoxPlayer2.Location = new System.Drawing.Point(137, 88);
+            this.textBoxPlayer2.Name = "textBoxPlayer2";
+            this.textBoxPlayer2.Size = new System.Drawing.Size(142, 22);
+            this.textBoxPlayer2.TabIndex = 2;
+            this.textBoxPlayer2.Text = "Computer";
             // 
-            // textBox2
+            // textBoxPlayer1
             // 
-            this.textBox2.Location = new System.Drawing.Point(137, 53);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(142, 22);
-            this.textBox2.TabIndex = 0;
+            this.textBoxPlayer1.Location = new System.Drawing.Point(137, 53);
+            this.textBoxPlayer1.Name = "textBoxPlayer1";
+            this.textBoxPlayer1.Size = new System.Drawing.Size(142, 22);
+            this.textBoxPlayer1.TabIndex = 0;
             // 
-            // numericUpDown2
+            // numericUpDownCols
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(224, 178);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(55, 22);
-            this.numericUpDown2.TabIndex = 4;
+            this.numericUpDownCols.Location = new System.Drawing.Point(224, 178);
+            this.numericUpDownCols.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownCols.Minimum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownCols.Name = "numericUpDownCols";
+            this.numericUpDownCols.ReadOnly = true;
+            this.numericUpDownCols.Size = new System.Drawing.Size(55, 22);
+            this.numericUpDownCols.TabIndex = 4;
+            this.numericUpDownCols.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownCols.ValueChanged += new System.EventHandler(this.numericUpDown_ValueChanged);
             // 
             // FormSettings
             // 
-            this.AcceptButton = this.buttonStart;
+            this.AcceptButton = this.ButtonStart;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(302, 306);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.numericUpDownCols);
+            this.Controls.Add(this.textBoxPlayer1);
+            this.Controls.Add(this.textBoxPlayer2);
+            this.Controls.Add(this.numericUpDownRows);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.checkBoxPlayer2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.buttonStart);
+            this.Controls.Add(this.ButtonStart);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRows)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCols)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,17 +205,17 @@ namespace WindowsFormsFlippedTicTacToe
 
         #endregion
 
-        private System.Windows.Forms.Button buttonStart;
+        private System.Windows.Forms.Button ButtonStart;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBoxPlayer2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDownRows;
+        private System.Windows.Forms.TextBox textBoxPlayer2;
+        private System.Windows.Forms.TextBox textBoxPlayer1;
+        private System.Windows.Forms.NumericUpDown numericUpDownCols;
     }
 }
 
