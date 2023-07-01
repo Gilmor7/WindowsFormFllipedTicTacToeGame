@@ -73,5 +73,11 @@ namespace WindowsFormsFlippedTicTacToe
                 numericUpDownCols.Value = numericUpDownRows.Value;
             }
         }
+
+        private void ButtonStart_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
     }
 }
