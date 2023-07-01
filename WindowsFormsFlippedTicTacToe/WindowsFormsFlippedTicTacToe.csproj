@@ -85,7 +85,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ex2\B23 Ex02 NoelFreid 318660255 GilMorhaim 316223528\FlippedTicTacToe\FlippedTicTacToe.csproj">
+    <ProjectReference Include="..\FlippedTicTacToe\FlippedTicTacToe.csproj">
       <Project>{c0d20469-e49e-4ec6-997a-8c20cf7c2d4c}</Project>
       <Name>FlippedTicTacToe</Name>
     </ProjectReference>

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.33423.256
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsFlippedTicTacToe", "WindowsFormsFlippedTicTacToe\WindowsFormsFlippedTicTacToe.csproj", "{6491B2BD-02AE-4348-AC83-B02CCB2592BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlippedTicTacToe", "..\..\Ex2\B23 Ex02 NoelFreid 318660255 GilMorhaim 316223528\FlippedTicTacToe\FlippedTicTacToe.csproj", "{C0D20469-E49E-4EC6-997A-8C20CF7C2D4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlippedTicTacToe", "FlippedTicTacToe\FlippedTicTacToe.csproj", "{C0D20469-E49E-4EC6-997A-8C20CF7C2D4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
