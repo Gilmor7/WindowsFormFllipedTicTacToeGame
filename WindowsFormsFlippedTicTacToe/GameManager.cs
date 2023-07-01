@@ -29,9 +29,26 @@ namespace WindowsFormsFlippedTicTacToe
             }
         }
 
+        private void buttonClicked(Button b, Cell cell)
+        {
+            //r_GameEngine.MakeMove(cell);
+            //b.Text = r_GameEngine.CurrentPlayer.Symbol;
+            //b.Enabled = false;
+        }
+
         private void createGameBoard()
         {
-            int x = 5;
+            //Buttonmatrix
+
+            //    for(int i = 0; i < UPPER; i++)
+            //    {
+            //        for(int j = 0; j < UPPER; j++)
+            //        {
+            //            Buttonmatrix[i, j] = new Button();
+            //            Cell cell = new Cell(i, j);
+            //            Buttonmatrix[i, j].Click = buttonClicked(Buttonmatrix[i, j], cell);
+            //        }
+            //    }
         }
     }
 }
