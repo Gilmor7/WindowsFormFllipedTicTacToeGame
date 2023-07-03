@@ -184,7 +184,7 @@ namespace FlippedTicTacToe
         {
             bool isSingleSymbolFullSequenceFound = 
                 m_Board.CheckForSingleSymbolFullSequenceInRow(i_SelectedCell.Row, m_CurrentPlayer.Symbol) ||
-                m_Board.CheckForSingleSymbolFullSequenceInColumn(i_SelectedCell.Row, m_CurrentPlayer.Symbol) ||
+                m_Board.CheckForSingleSymbolFullSequenceInColumn(i_SelectedCell.Column, m_CurrentPlayer.Symbol) ||
                 m_Board.CheckForSingleSymbolFullSequenceInDiagonal(i_SelectedCell, m_CurrentPlayer.Symbol);
 
             return isSingleSymbolFullSequenceFound;
