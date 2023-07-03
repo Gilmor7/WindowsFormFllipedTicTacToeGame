@@ -21,6 +21,7 @@ namespace WindowsFormsFlippedTicTacToe
         private void HandleGameFinished(eGameStatus i_GameStatus)
         {
             formGame.GenerateFinishMsg(i_GameStatus, r_GameEngine.CurrentPlayer);
+            r_GameEngine.RestartGame();
         }
 
         private void setGameSettings()

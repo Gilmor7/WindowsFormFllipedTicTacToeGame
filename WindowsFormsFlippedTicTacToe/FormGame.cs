@@ -64,6 +64,7 @@ namespace WindowsFormsFlippedTicTacToe
 
         public void UpdatePlayerNamesAndScores(string player1Name, uint player1Score, string player2Name, uint player2Score, bool isPlayer1Turn)
         {
+            //TODO: make this method to be better, no need to render all of them again everytime.
             lblPlayer1.Text = $"{player1Name}: {player1Score}";
             lblPlayer1.Font = new Font(lblPlayer1.Font, isPlayer1Turn ? FontStyle.Bold : FontStyle.Regular);
 
@@ -107,11 +108,15 @@ namespace WindowsFormsFlippedTicTacToe
                 msg = $"The winner is {i_Winner.Name}!";
             }
             
-            DialogResult result = MessageBox.Show(msg + Environment.NewLine + "Would you like to play another round?", "A Win!", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show(msg + Environment.NewLine + "Would you like to play another round?", "Play again?", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
                 restartTheButtonsBoard();
+            }
+            else
+            {
+                this.Close();
             }
         }
         
