@@ -13,6 +13,10 @@ namespace FlippedTicTacToe
         private Player m_CurrentPlayer = null;
         private eGameStatus m_GameStatus = eGameStatus.InProgress;
 
+        public event Action<Cell> MoveMade;
+
+        public event Action<eGameStatus> GameFinished;
+
         public Player CurrentPlayer
         {
             get
@@ -103,8 +107,13 @@ namespace FlippedTicTacToe
             }
 
             m_Board.UpdateCell(i_SelectedCell, m_CurrentPlayer.Symbol);
+            MoveMade?.Invoke(i_SelectedCell);
             updateGameStatusAndScoreIfNeeded(i_SelectedCell);
             switchCurrentPlayer();
+            if(GameStatus != eGameStatus.InProgress)
+            {
+                GameFinished?.Invoke(GameStatus);
+            }
         }
 
         public void MakeRandomMove()
@@ -113,8 +122,13 @@ namespace FlippedTicTacToe
             Cell selectedCell = selectRandomCellFromList(availableCells);
 
             m_Board.UpdateCell(selectedCell, m_CurrentPlayer.Symbol);
+            MoveMade?.Invoke(selectedCell);
             updateGameStatusAndScoreIfNeeded(selectedCell);
             switchCurrentPlayer();
+            if (GameStatus != eGameStatus.InProgress)
+            {
+                GameFinished?.Invoke(GameStatus);
+            }
         }
 
         private static Cell selectRandomCellFromList(List<Cell> i_CellsList)
