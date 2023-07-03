@@ -97,7 +97,34 @@ namespace WindowsFormsFlippedTicTacToe
 
         public void GenerateFinishMsg(eGameStatus i_GameStatus, Player i_Winner)
         {
+            string msg = string.Empty;
+            if (i_GameStatus == eGameStatus.Draw)
+            {
+                msg = "A Tie!";
+            }
+            else
+            {
+                msg = $"The winner is {i_Winner.Name}!";
+            }
             
+            DialogResult result = MessageBox.Show(msg + Environment.NewLine + "Would you like to play another round?", "A Win!", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                restartTheButtonsBoard();
+            }
+        }
+        
+        private void restartTheButtonsBoard()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.Text = string.Empty;
+                    button.Enabled = true;
+                }
+            }
         }
     }
 }
