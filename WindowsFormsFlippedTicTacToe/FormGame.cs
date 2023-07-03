@@ -65,14 +65,14 @@ namespace WindowsFormsFlippedTicTacToe
             this.Controls.Add(m_LabelPlayer2);
         }
 
-        public void UpdatePlayerNamesAndScores(string player1Name, uint player1Score, string player2Name, uint player2Score, bool isPlayer1Turn)
+        public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score, bool i_IsPlayer1Turn)
         {
             //TODO: make this method to be better, no need to render all of them again everytime.
-            m_LabelPlayer1.Text = $"{player1Name}: {player1Score}";
-            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, isPlayer1Turn ? FontStyle.Bold : FontStyle.Regular);
+            m_LabelPlayer1.Text = $"{i_Player1Name}: {i_Player1Score}";
+            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, i_IsPlayer1Turn ? FontStyle.Bold : FontStyle.Regular);
 
-            m_LabelPlayer2.Text = $"{player2Name}: {player2Score}";
-            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, isPlayer1Turn ? FontStyle.Regular : FontStyle.Bold);
+            m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";
+            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, i_IsPlayer1Turn ? FontStyle.Regular : FontStyle.Bold);
 
             // Adjust label locations after text changed
             m_LabelPlayer2.Location = new Point(10 + m_LabelPlayer1.Width + 10, m_LabelPlayer2.Location.Y);

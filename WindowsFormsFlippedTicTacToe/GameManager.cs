@@ -43,7 +43,7 @@ namespace WindowsFormsFlippedTicTacToe
         private void createGameBoard()
         {
             r_FormGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
-            UpdatePlayerNamesAndScores();
+            updatePlayerNamesAndScores();
         }
 
         private eSymbols HandleButtonClicked(Cell i_Cell)
@@ -65,7 +65,7 @@ namespace WindowsFormsFlippedTicTacToe
             r_FormGame.UpdateCell(i_Cell, r_GameEngine.CurrentPlayer.Symbol);
         }
 
-        private void UpdatePlayerNamesAndScores()
+        private void updatePlayerNamesAndScores()
         {
             string player1Name = r_GameEngine.Player1.Name;
             uint player1Score = r_GameEngine.Player1.Score;
@@ -86,7 +86,7 @@ namespace WindowsFormsFlippedTicTacToe
             string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
             string caption = this.generateFinishCaption(i_GameStatus);
 
-            UpdatePlayerNamesAndScores();
+            updatePlayerNamesAndScores();
             DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)

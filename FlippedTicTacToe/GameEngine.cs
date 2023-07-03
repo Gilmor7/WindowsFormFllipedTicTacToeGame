@@ -106,7 +106,7 @@ namespace FlippedTicTacToe
             }
 
             m_Board.UpdateCell(i_SelectedCell, m_CurrentPlayer.Symbol);
-            MoveMade?.Invoke(i_SelectedCell); // TODO: move to method onMoveMade?
+            OnMoveMade(i_SelectedCell);
             updateGameStatusAndScoreIfNeeded(i_SelectedCell);
             endOfMoveProcedure();
         }
@@ -117,7 +117,7 @@ namespace FlippedTicTacToe
             Cell selectedCell = selectRandomCellFromList(availableCells);
 
             m_Board.UpdateCell(selectedCell, m_CurrentPlayer.Symbol);
-            MoveMade?.Invoke(selectedCell); // TODO: move to method onMoveMade?
+            OnMoveMade(selectedCell);
             updateGameStatusAndScoreIfNeeded(selectedCell);
             endOfMoveProcedure();
         }
@@ -127,7 +127,7 @@ namespace FlippedTicTacToe
             if (GameStatus != eGameStatus.InProgress)
             {
                 Player winner = findWinner();
-                GameFinished?.Invoke(GameStatus, winner); // TODO: move to method onMoveMade?
+                OnGameFinished(GameStatus, winner);
             }
             else
             {
@@ -215,5 +215,14 @@ namespace FlippedTicTacToe
             return i_BoardSize >= k_MinBoardSize && i_BoardSize <= k_MaxBoardSize;
         }
 
+        protected virtual void OnGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        {
+            GameFinished?.Invoke(i_GameStatus, i_Winner);
+        }
+
+        protected virtual void OnMoveMade(Cell i_Cell)
+        {
+            MoveMade?.Invoke(i_Cell);
+        }
     }
 }
