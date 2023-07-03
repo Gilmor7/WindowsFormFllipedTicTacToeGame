@@ -15,6 +15,7 @@ namespace FlippedTicTacToe
 
         public event Action<Cell> MoveMade;
         public event Action<eGameStatus, Player> GameFinished;
+        public event Action ComputerTurn;
 
         public Player CurrentPlayer
         {
@@ -132,6 +133,10 @@ namespace FlippedTicTacToe
             else
             {
                 switchCurrentPlayer();
+                if(CurrentPlayer.IsComputer)
+                {
+                    OnComputerTurn();
+                }
             }
         }
 
@@ -223,6 +228,11 @@ namespace FlippedTicTacToe
         protected virtual void OnMoveMade(Cell i_Cell)
         {
             MoveMade?.Invoke(i_Cell);
+        }
+
+        protected virtual void OnComputerTurn()
+        {
+            ComputerTurn?.Invoke();
         }
     }
 }
