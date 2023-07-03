@@ -6,22 +6,23 @@ namespace WindowsFormsFlippedTicTacToe
 {
     public sealed class GameManager
     {
-        private readonly GameEngine r_GameEngine = new GameEngine();
-        private FormGame formGame;
+        private readonly GameEngine r_GameEngine;
+        private readonly FormGame r_FormGame;
+
+        public GameManager()
+        {
+            r_GameEngine = new GameEngine();
+            r_FormGame = new FormGame();
+            r_FormGame.ButtonClicked += HandleButtonClicked;
+            r_GameEngine.MoveMade += HandleMoveMade;
+            r_GameEngine.GameFinished += HandleGameFinished;
+        }
 
         public void Run()
         {
             setGameSettings();
             createGameBoard();
-            r_GameEngine.MoveMade += HandleMoveMade;
-            r_GameEngine.GameFinished += HandleGameFinished;
-            formGame.ShowDialog();
-        }
-
-        private void HandleGameFinished(eGameStatus i_GameStatus)
-        {
-            formGame.GenerateFinishMsg(i_GameStatus, r_GameEngine.CurrentPlayer);
-            r_GameEngine.RestartGame();
+            r_FormGame.ShowDialog();
         }
 
         private void setGameSettings()
@@ -41,41 +42,28 @@ namespace WindowsFormsFlippedTicTacToe
 
         private void createGameBoard()
         {
-            if (formGame == null)
-            {
-                formGame = new FormGame();
-                formGame.ButtonClicked += HandleButtonClicked;
-                formGame.ComputerMoved += HandleComputerMoved;
-            }
-            formGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
+            r_FormGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
             UpdatePlayerNamesAndScores();
         }
 
-        private eSymbols HandleButtonClicked(Cell cell)
+        private eSymbols HandleButtonClicked(Cell i_Cell)
         {
-            r_GameEngine.MakeMove(cell);
+            r_GameEngine.MakeMove(i_Cell);
 
             if (r_GameEngine.Player2.IsComputer && r_GameEngine.GameStatus == eGameStatus.InProgress)
             {
                 r_GameEngine.MakeRandomMove();
             }
 
-            formGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score, r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+            r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score, r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
 
             return r_GameEngine.CurrentPlayer.Symbol;
         }
 
-        private void HandleMoveMade(Cell cell)
+        private void HandleMoveMade(Cell i_Cell)
         {
-            formGame.UpdateCell(cell, r_GameEngine.CurrentPlayer.Symbol);
-            UpdatePlayerNamesAndScores();
+            r_FormGame.UpdateCell(i_Cell, r_GameEngine.CurrentPlayer.Symbol);
         }
-
-        private void HandleComputerMoved(Cell cell)
-        {
-            UpdatePlayerNamesAndScores();
-        }
-
 
         private void UpdatePlayerNamesAndScores()
         {
@@ -85,12 +73,65 @@ namespace WindowsFormsFlippedTicTacToe
             uint player2Score = r_GameEngine.Player2.Score;
             bool isPlayer1Turn = r_GameEngine.CurrentPlayer == r_GameEngine.Player1;
 
-            formGame.UpdatePlayerNamesAndScores(
+            r_FormGame.UpdatePlayerNamesAndScores(
                 player1Name,
                 player1Score,
                 player2Name,
                 player2Score,
                 isPlayer1Turn);
+        }
+
+        private void HandleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        {
+            string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
+            string caption = this.generateFinishCaption(i_GameStatus);
+
+            UpdatePlayerNamesAndScores();
+            DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                r_GameEngine.RestartGame();
+                r_FormGame.ResetBoardButtons();
+            }
+            else
+            {
+                r_FormGame.Close();
+            }
+        }
+
+        private string generateFinishMsg(eGameStatus i_GameStatus, Player i_Winner)
+        {
+            string msg = string.Empty;
+
+            if (i_GameStatus == eGameStatus.Draw)
+            {
+                msg = "Tie!";
+            }
+            else
+            {
+                msg = $"The winner is {i_Winner.Name}!";
+            }
+
+            msg = msg + Environment.NewLine + "Would you like to play another round?";
+
+            return msg;
+        }
+
+        private string generateFinishCaption(eGameStatus i_GameStatus)
+        {
+            string caption = string.Empty;
+
+            if (i_GameStatus == eGameStatus.Draw)
+            {
+                caption = "A Tie!";
+            }
+            else
+            {
+                caption = "A Win!";
+            }
+
+            return caption;
         }
     }
 }

@@ -14,8 +14,7 @@ namespace FlippedTicTacToe
         private eGameStatus m_GameStatus = eGameStatus.InProgress;
 
         public event Action<Cell> MoveMade;
-
-        public event Action<eGameStatus> GameFinished;
+        public event Action<eGameStatus, Player> GameFinished;
 
         public Player CurrentPlayer
         {
@@ -107,13 +106,9 @@ namespace FlippedTicTacToe
             }
 
             m_Board.UpdateCell(i_SelectedCell, m_CurrentPlayer.Symbol);
-            MoveMade?.Invoke(i_SelectedCell);
+            MoveMade?.Invoke(i_SelectedCell); // TODO: move to method onMoveMade?
             updateGameStatusAndScoreIfNeeded(i_SelectedCell);
-            switchCurrentPlayer();
-            if(GameStatus != eGameStatus.InProgress)
-            {
-                GameFinished?.Invoke(GameStatus);
-            }
+            endOfMoveProcedure();
         }
 
         public void MakeRandomMove()
@@ -122,13 +117,38 @@ namespace FlippedTicTacToe
             Cell selectedCell = selectRandomCellFromList(availableCells);
 
             m_Board.UpdateCell(selectedCell, m_CurrentPlayer.Symbol);
-            MoveMade?.Invoke(selectedCell);
+            MoveMade?.Invoke(selectedCell); // TODO: move to method onMoveMade?
             updateGameStatusAndScoreIfNeeded(selectedCell);
-            switchCurrentPlayer();
+            endOfMoveProcedure();
+        }
+
+        private void endOfMoveProcedure()
+        {
             if (GameStatus != eGameStatus.InProgress)
             {
-                GameFinished?.Invoke(GameStatus);
+                Player winner = findWinner();
+                GameFinished?.Invoke(GameStatus, winner); // TODO: move to method onMoveMade?
             }
+            else
+            {
+                switchCurrentPlayer();
+            }
+        }
+
+        private Player findWinner()
+        {
+            Player winner = null;
+
+            if(GameStatus == eGameStatus.Player1Win)
+            {
+                winner = Player1;
+            }
+            else if(GameStatus == eGameStatus.Player2Win)
+            {
+                winner = Player2;
+            }
+
+            return winner;
         }
 
         private static Cell selectRandomCellFromList(List<Cell> i_CellsList)
