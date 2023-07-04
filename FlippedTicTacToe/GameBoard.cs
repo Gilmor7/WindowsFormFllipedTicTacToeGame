@@ -16,6 +16,14 @@ namespace FlippedTicTacToe
             m_GameBoard = new eSymbols[i_BoardSize, i_BoardSize];
         }
 
+        public uint Size
+        {
+            get
+            {
+                return m_MatrixWidth;
+            }
+        }
+
         public ulong NumberOfEmptyCells
         {
             get

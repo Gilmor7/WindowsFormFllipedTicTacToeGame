@@ -13,6 +13,9 @@ namespace FlippedTicTacToe
         private Player m_CurrentPlayer = null;
         private eGameStatus m_GameStatus = eGameStatus.InProgress;
 
+        public event Action<Cell> MoveMade;
+        public event Action<eGameStatus, Player> GameFinished;
+
         public Player CurrentPlayer
         {
             get
@@ -103,8 +106,9 @@ namespace FlippedTicTacToe
             }
 
             m_Board.UpdateCell(i_SelectedCell, m_CurrentPlayer.Symbol);
+            OnMoveMade(i_SelectedCell);
             updateGameStatusAndScoreIfNeeded(i_SelectedCell);
-            switchCurrentPlayer();
+            endOfMoveProcedure();
         }
 
         public void MakeRandomMove()
@@ -113,8 +117,38 @@ namespace FlippedTicTacToe
             Cell selectedCell = selectRandomCellFromList(availableCells);
 
             m_Board.UpdateCell(selectedCell, m_CurrentPlayer.Symbol);
+            OnMoveMade(selectedCell);
             updateGameStatusAndScoreIfNeeded(selectedCell);
-            switchCurrentPlayer();
+            endOfMoveProcedure();
+        }
+
+        private void endOfMoveProcedure()
+        {
+            if (GameStatus != eGameStatus.InProgress)
+            {
+                Player winner = findWinner();
+                OnGameFinished(GameStatus, winner);
+            }
+            else
+            {
+                switchCurrentPlayer();
+            }
+        }
+
+        private Player findWinner()
+        {
+            Player winner = null;
+
+            if(GameStatus == eGameStatus.Player1Win)
+            {
+                winner = Player1;
+            }
+            else if(GameStatus == eGameStatus.Player2Win)
+            {
+                winner = Player2;
+            }
+
+            return winner;
         }
 
         private static Cell selectRandomCellFromList(List<Cell> i_CellsList)
@@ -170,7 +204,7 @@ namespace FlippedTicTacToe
         {
             bool isSingleSymbolFullSequenceFound = 
                 m_Board.CheckForSingleSymbolFullSequenceInRow(i_SelectedCell.Row, m_CurrentPlayer.Symbol) ||
-                m_Board.CheckForSingleSymbolFullSequenceInColumn(i_SelectedCell.Row, m_CurrentPlayer.Symbol) ||
+                m_Board.CheckForSingleSymbolFullSequenceInColumn(i_SelectedCell.Column, m_CurrentPlayer.Symbol) ||
                 m_Board.CheckForSingleSymbolFullSequenceInDiagonal(i_SelectedCell, m_CurrentPlayer.Symbol);
 
             return isSingleSymbolFullSequenceFound;
@@ -181,5 +215,14 @@ namespace FlippedTicTacToe
             return i_BoardSize >= k_MinBoardSize && i_BoardSize <= k_MaxBoardSize;
         }
 
+        protected virtual void OnGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        {
+            GameFinished?.Invoke(i_GameStatus, i_Winner);
+        }
+
+        protected virtual void OnMoveMade(Cell i_Cell)
+        {
+            MoveMade?.Invoke(i_Cell);
+        }
     }
 }
