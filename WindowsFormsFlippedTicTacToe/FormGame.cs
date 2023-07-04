@@ -12,6 +12,8 @@ namespace WindowsFormsFlippedTicTacToe
         private Label m_LabelPlayer1;
         private Label m_LabelPlayer2;
         private ButtonBoard[,] m_BoardButtons;
+        private Font m_BoldFont;
+        private Font m_NormalFont;
 
         public event Func<Cell, eSymbols> ButtonClicked;
 
@@ -59,23 +61,33 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer1 = new Label();
             m_LabelPlayer2 = new Label();
 
+            m_BoldFont = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
+            m_NormalFont = new Font(m_LabelPlayer1.Font, FontStyle.Regular);
+
             m_LabelPlayer1.Location = new Point(10, this.ClientSize.Height - m_LabelPlayer1.Height - 10);
             m_LabelPlayer2.Location = new Point(10 + m_LabelPlayer2.Width + 10, this.ClientSize.Height - m_LabelPlayer2.Height - 10);
             this.Controls.Add(m_LabelPlayer1);
             this.Controls.Add(m_LabelPlayer2);
         }
 
-        public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score, bool i_IsPlayer1Turn)
+        public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score)
         {
-            //TODO: make this method to be better, no need to render all of them again everytime.
             m_LabelPlayer1.Text = $"{i_Player1Name}: {i_Player1Score}";
-            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, i_IsPlayer1Turn ? FontStyle.Bold : FontStyle.Regular);
-
             m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";
-            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, i_IsPlayer1Turn ? FontStyle.Regular : FontStyle.Bold);
+        }
 
-            // Adjust label locations after text changed
-            m_LabelPlayer2.Location = new Point(10 + m_LabelPlayer1.Width + 10, m_LabelPlayer2.Location.Y);
+        public void MakeCurrentPlayerLabelBold(bool i_IsPlayer1CurrentPlayer)
+        {
+            if(i_IsPlayer1CurrentPlayer)
+            {
+                m_LabelPlayer1.Font = m_BoldFont;
+                m_LabelPlayer2.Font = m_NormalFont;
+            }
+            else
+            {
+                m_LabelPlayer1.Font = m_NormalFont;
+                m_LabelPlayer2.Font = m_BoldFont;
+            }
         }
 
         private void Button_Click(object sender, EventArgs e)

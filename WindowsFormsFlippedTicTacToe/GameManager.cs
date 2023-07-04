@@ -13,19 +13,23 @@ namespace WindowsFormsFlippedTicTacToe
         {
             r_GameEngine = new GameEngine();
             r_FormGame = new FormGame();
-            r_FormGame.ButtonClicked += HandleButtonClicked;
-            r_GameEngine.MoveMade += HandleMoveMade;
-            r_GameEngine.GameFinished += HandleGameFinished;
+            r_FormGame.ButtonClicked += handleButtonClicked;
+            r_GameEngine.MoveMade += handleMoveMade;
+            r_GameEngine.GameFinished += handleGameFinished;
         }
 
         public void Run()
         {
-            setGameSettings();
-            createGameBoard();
-            r_FormGame.ShowDialog();
+            bool setGameSettingsWasOk = setGameSettings();
+
+            if(setGameSettingsWasOk)
+            {
+                createGameBoard();
+                r_FormGame.ShowDialog();
+            }
         }
 
-        private void setGameSettings()
+        private bool setGameSettings()
         {
             FormSettings formSettings = new FormSettings();
             DialogResult result = formSettings.ShowDialog();
@@ -38,29 +42,44 @@ namespace WindowsFormsFlippedTicTacToe
                 r_GameEngine.SetSecondPlayer(isPlayer2Computer, formSettings.Player2Name);
                 r_GameEngine.SetGameBoardSize(formSettings.BoardWidth);
             }
+
+            return result == DialogResult.OK;
         }
 
         private void createGameBoard()
         {
             r_FormGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
+            r_FormGame.MakeCurrentPlayerLabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
             updatePlayerNamesAndScores();
         }
 
-        private eSymbols HandleButtonClicked(Cell i_Cell)
+        private eSymbols handleButtonClicked(Cell i_Cell)
         {
             r_GameEngine.MakeMove(i_Cell);
 
-            if (r_GameEngine.Player2.IsComputer && r_GameEngine.GameStatus == eGameStatus.InProgress)
+            if(r_GameEngine.Player2.IsComputer && r_GameEngine.GameStatus == eGameStatus.InProgress)
             {
                 r_GameEngine.MakeRandomMove();
             }
 
-            r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score, r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+            if(r_GameEngine.GameStatus != eGameStatus.InProgress)
+            {
+                restartGame();
+            }
+
+            r_FormGame.MakeCurrentPlayerLabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+            r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score);
 
             return r_GameEngine.CurrentPlayer.Symbol;
         }
 
-        private void HandleMoveMade(Cell i_Cell)
+        private void restartGame()
+        {
+            r_GameEngine.RestartGame();
+            r_FormGame.ResetBoardButtons();
+        }
+
+        private void handleMoveMade(Cell i_Cell)
         {
             r_FormGame.UpdateCell(i_Cell, r_GameEngine.CurrentPlayer.Symbol);
         }
@@ -77,24 +96,17 @@ namespace WindowsFormsFlippedTicTacToe
                 player1Name,
                 player1Score,
                 player2Name,
-                player2Score,
-                isPlayer1Turn);
+                player2Score);
         }
 
-        private void HandleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
         {
             string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
             string caption = this.generateFinishCaption(i_GameStatus);
 
-            updatePlayerNamesAndScores();
             DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
 
-            if (result == DialogResult.Yes)
-            {
-                r_GameEngine.RestartGame();
-                r_FormGame.ResetBoardButtons();
-            }
-            else
+            if(result == DialogResult.No)
             {
                 r_FormGame.Close();
             }
