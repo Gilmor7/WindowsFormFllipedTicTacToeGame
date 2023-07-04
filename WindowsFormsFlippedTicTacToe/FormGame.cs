@@ -141,5 +141,10 @@ namespace WindowsFormsFlippedTicTacToe
                 }
             }
         }
+
+        private void FormGame_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
