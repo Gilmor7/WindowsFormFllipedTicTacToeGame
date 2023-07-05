@@ -39,7 +39,6 @@ namespace WindowsFormsFlippedTicTacToe
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormGame";
             this.Text = "TicTacToeMisere";
-            this.Load += new System.EventHandler(this.FormGame_Load);
             this.ResumeLayout(false);
 
         }

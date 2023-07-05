@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using FlippedTicTacToe;
 
@@ -15,7 +14,7 @@ namespace WindowsFormsFlippedTicTacToe
         private Font m_BoldFont;
         private Font m_NormalFont;
 
-        public event Func<Cell, eSymbols> ButtonClicked;
+        public event Action<Cell> ButtonClicked;
 
         public FormGame()
         {
@@ -74,7 +73,7 @@ namespace WindowsFormsFlippedTicTacToe
             this.Controls.Add(m_LabelPlayer1);
             this.Controls.Add(m_LabelPlayer2);
 
-            int yPosition = m_BoardButtons[m_BoardButtons.GetLength(0) - 1, 0].Bottom + 10; // position of labels will be just below last row of buttons
+            int yPosition = m_BoardButtons[m_BoardButtons.GetLength(0) - 1, 0].Bottom + 10;
             int totalWidth = m_LabelPlayer1.Width + m_LabelPlayer2.Width + 3;
             int player1LabelX = (this.ClientSize.Width - totalWidth) / 2;
             int player2LabelX = player1LabelX + m_LabelPlayer1.Width + 3;
@@ -140,11 +139,6 @@ namespace WindowsFormsFlippedTicTacToe
                     m_BoardButtons[i, j].Enabled = true;
                 }
             }
-        }
-
-        private void FormGame_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

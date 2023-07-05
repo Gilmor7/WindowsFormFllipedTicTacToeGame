@@ -53,7 +53,7 @@ namespace WindowsFormsFlippedTicTacToe
             updatePlayerNamesAndScores();
         }
 
-        private eSymbols handleButtonClicked(Cell i_Cell)
+        private void handleButtonClicked(Cell i_Cell)
         {
             r_GameEngine.MakeMove(i_Cell);
 
@@ -69,8 +69,6 @@ namespace WindowsFormsFlippedTicTacToe
 
             r_FormGame.MakeCurrentPlayerLabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
             r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score);
-
-            return r_GameEngine.CurrentPlayer.Symbol;
         }
 
         private void restartGame()
