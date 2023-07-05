@@ -59,8 +59,7 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer1 = new Label();
             m_LabelPlayer2 = new Label();
 
-            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
-            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, FontStyle.Regular);
+            ResetPlayersFont();
 
             m_LabelPlayer1.Text = "Player1: 0";
             m_LabelPlayer2.Text = "Player2: 0";
@@ -93,10 +92,8 @@ namespace WindowsFormsFlippedTicTacToe
 
         public void ResetPlayersFont()
         {
-            if(m_LabelPlayer2.Font.Bold)
-            {
-                SwitchPlayersBoldLabel();
-            }
+            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
+            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, FontStyle.Regular);
         }
 
         protected virtual void OnButtonClicked(object sender, EventArgs e)

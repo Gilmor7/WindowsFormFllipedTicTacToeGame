@@ -68,12 +68,12 @@ namespace WindowsFormsFlippedTicTacToe
         private void gameEngine_TurnFinished()
         {
             bool isComputerTurn = checkIfComputerTurn();
-            if(isComputerTurn)
+            r_FormGame.SwitchPlayersBoldLabel();
+
+            if (isComputerTurn)
             {
                 r_GameEngine.MakeRandomMove();
             }
-
-            r_FormGame.SwitchPlayersBoldLabel();
         }
 
         private void gameEngine_SymbolPlaced(Cell i_Cell)
