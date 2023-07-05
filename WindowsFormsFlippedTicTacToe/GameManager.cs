@@ -83,7 +83,6 @@ namespace WindowsFormsFlippedTicTacToe
         {
             r_GameEngine.MakeMove(i_Cell);
             r_FormGame.MakePlayer1LabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
-            r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score);
         }
 
         private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
@@ -93,13 +92,14 @@ namespace WindowsFormsFlippedTicTacToe
 
             DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
 
-            if(result == DialogResult.No)
+            if(result == DialogResult.Yes)
             {
-                r_FormGame.Close();
+                restartGame();
+                updatePlayerNamesAndScores();
             }
             else
             {
-                restartGame();
+                r_FormGame.Close();
             }
         }
 
