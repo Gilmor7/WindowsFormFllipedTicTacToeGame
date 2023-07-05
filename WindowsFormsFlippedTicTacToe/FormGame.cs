@@ -11,8 +11,6 @@ namespace WindowsFormsFlippedTicTacToe
         private Label m_LabelPlayer1;
         private Label m_LabelPlayer2;
         private ButtonBoard[,] m_BoardButtons;
-        private Font m_BoldFont;
-        private Font m_NormalFont;
 
         public event Action<Cell> ButtonClicked;
 
@@ -43,7 +41,7 @@ namespace WindowsFormsFlippedTicTacToe
                     Point buttonLocation = new Point(startX + j * (ButtonBoard.k_ButtonSize + k_MarginBetweenButtons), startY + i * (ButtonBoard.k_ButtonSize + k_MarginBetweenButtons));
 
                     ButtonBoard button = new ButtonBoard(i, j, buttonLocation);
-                    button.Click += Button_Click;
+                    button.Click += OnButtonClicked;
                     this.Controls.Add(button);
                     m_BoardButtons[i, j] = button;
                 }
@@ -61,11 +59,8 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer1 = new Label();
             m_LabelPlayer2 = new Label();
 
-            m_BoldFont = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
-            m_NormalFont = new Font(m_LabelPlayer1.Font, FontStyle.Regular);
-
-            m_LabelPlayer1.Font = m_BoldFont;
-            m_LabelPlayer2.Font = m_NormalFont;
+            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
+            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, FontStyle.Regular);
 
             m_LabelPlayer1.Text = "Player1: 0";
             m_LabelPlayer2.Text = "Player2: 0";
@@ -98,7 +93,7 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer2.Font = temp;
         }
 
-        private void Button_Click(object sender, EventArgs e)
+        protected virtual void OnButtonClicked(object sender, EventArgs e)
         {
             if (ButtonClicked != null)
             {
@@ -118,6 +113,7 @@ namespace WindowsFormsFlippedTicTacToe
             {
                 throw new ArgumentException("The provided cell is out of the game board bounds.");
             }
+            
             ButtonBoard button = m_BoardButtons[i_Cell.Row, i_Cell.Column];
             button.Text = i_Symbol.ToString();
             button.Enabled = false;

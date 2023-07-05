@@ -13,10 +13,10 @@ namespace WindowsFormsFlippedTicTacToe
         {
             r_GameEngine = new GameEngine();
             r_FormGame = new FormGame();
-            r_FormGame.ButtonClicked += handleButtonClicked;
-            r_GameEngine.PlacedSymbol += handleSymbolPlacement;
-            r_GameEngine.GameFinished += handleGameFinished;
-            r_GameEngine.TurnFinished += handleTurnFinished;
+            r_FormGame.ButtonClicked += formGameButtonBoard_Click;
+            r_GameEngine.PlacedSymbol += gameEngine_SymbolPlaced;
+            r_GameEngine.GameFinished += gameEngine_GameFinished;
+            r_GameEngine.TurnFinished += gameEngine_TurnFinished;
         }
 
         public void Run()
@@ -64,7 +64,7 @@ namespace WindowsFormsFlippedTicTacToe
             return r_GameEngine.CurrentPlayer == r_GameEngine.Player2 && r_GameEngine.Player2.IsComputer;
         }
 
-        private void handleTurnFinished()
+        private void gameEngine_TurnFinished()
         {
             bool isComputerTurn = checkIfComputerTurn();
             if(isComputerTurn)
@@ -73,18 +73,18 @@ namespace WindowsFormsFlippedTicTacToe
             }
         }
 
-        private void handleSymbolPlacement(Cell i_Cell)
+        private void gameEngine_SymbolPlaced(Cell i_Cell)
         {
             r_FormGame.UpdateCell(i_Cell, r_GameEngine.CurrentPlayer.Symbol);
         }
 
-        private void handleButtonClicked(Cell i_Cell)
+        private void formGameButtonBoard_Click(Cell i_Cell)
         {
             r_GameEngine.MakeMove(i_Cell);
             r_FormGame.SwitchPlayersBoldLabel();
         }
 
-        private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        private void gameEngine_GameFinished(eGameStatus i_GameStatus, Player i_Winner)
         {
             string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
             string caption = this.generateFinishCaption(i_GameStatus);
