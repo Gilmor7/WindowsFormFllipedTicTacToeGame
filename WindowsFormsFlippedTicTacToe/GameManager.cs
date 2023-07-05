@@ -57,6 +57,7 @@ namespace WindowsFormsFlippedTicTacToe
         {
             r_GameEngine.RestartGame();
             r_FormGame.ResetBoardButtons();
+            r_FormGame.ResetPlayersFont();
         }
 
         private bool checkIfComputerTurn()
@@ -71,6 +72,8 @@ namespace WindowsFormsFlippedTicTacToe
             {
                 r_GameEngine.MakeRandomMove();
             }
+
+            r_FormGame.SwitchPlayersBoldLabel();
         }
 
         private void gameEngine_SymbolPlaced(Cell i_Cell)
@@ -81,7 +84,6 @@ namespace WindowsFormsFlippedTicTacToe
         private void formGameButtonBoard_Click(Cell i_Cell)
         {
             r_GameEngine.MakeMove(i_Cell);
-            r_FormGame.SwitchPlayersBoldLabel();
         }
 
         private void gameEngine_GameFinished(eGameStatus i_GameStatus, Player i_Winner)

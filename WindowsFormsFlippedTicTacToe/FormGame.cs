@@ -88,9 +88,15 @@ namespace WindowsFormsFlippedTicTacToe
 
         public void SwitchPlayersBoldLabel()
         {
-            Font temp = m_LabelPlayer1.Font;
-            m_LabelPlayer1.Font = m_LabelPlayer2.Font;
-            m_LabelPlayer2.Font = temp;
+            (m_LabelPlayer1.Font, m_LabelPlayer2.Font) = (m_LabelPlayer2.Font, m_LabelPlayer1.Font);
+        }
+
+        public void ResetPlayersFont()
+        {
+            if(m_LabelPlayer2.Font.Bold)
+            {
+                SwitchPlayersBoldLabel();
+            }
         }
 
         protected virtual void OnButtonClicked(object sender, EventArgs e)
