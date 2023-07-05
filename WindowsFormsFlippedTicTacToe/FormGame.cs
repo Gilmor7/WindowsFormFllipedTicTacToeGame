@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using FlippedTicTacToe;
 
@@ -8,12 +7,14 @@ namespace WindowsFormsFlippedTicTacToe
 {
     public partial class FormGame : Form
     {
-        private const int k_MarginBetweenButtons = 10;
+        private const int k_MarginBetweenButtons = 3;
         private Label m_LabelPlayer1;
         private Label m_LabelPlayer2;
         private ButtonBoard[,] m_BoardButtons;
+        private Font m_BoldFont;
+        private Font m_NormalFont;
 
-        public event Func<Cell, eSymbols> ButtonClicked;
+        public event Action<Cell> ButtonClicked;
 
         public FormGame()
         {
@@ -26,12 +27,13 @@ namespace WindowsFormsFlippedTicTacToe
             this.fillBoardButtonMatrix(i_BoardSize);
             this.initializeLabelsForPlayersNameAndScore();
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.PerformLayout();
         }
 
         private void fillBoardButtonMatrix(int i_BoardSize)
         {
-            int startX = (this.ClientSize.Width - i_BoardSize * (ButtonBoard.k_ButtonSize + k_MarginBetweenButtons)) / 2;
-            int startY = (this.ClientSize.Height - i_BoardSize * (ButtonBoard.k_ButtonSize + k_MarginBetweenButtons)) / 2;
+            int startX = 10;
+            int startY = 10;
 
             m_BoardButtons = new ButtonBoard[i_BoardSize, i_BoardSize];
             for (int i = 0; i < i_BoardSize; i++)
@@ -50,8 +52,8 @@ namespace WindowsFormsFlippedTicTacToe
 
         private void setFormSize(int i_BoardSize)
         {
-            int width = i_BoardSize * (ButtonBoard.k_ButtonSize + 35);
-            this.Size = new Size(width, width);
+            int totalWidth = (ButtonBoard.k_ButtonSize + k_MarginBetweenButtons) * i_BoardSize + 30;
+            this.Size = new Size(totalWidth, totalWidth + 50);
         }
 
         private void initializeLabelsForPlayersNameAndScore()
@@ -59,23 +61,47 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer1 = new Label();
             m_LabelPlayer2 = new Label();
 
-            m_LabelPlayer1.Location = new Point(10, this.ClientSize.Height - m_LabelPlayer1.Height - 10);
-            m_LabelPlayer2.Location = new Point(10 + m_LabelPlayer2.Width + 10, this.ClientSize.Height - m_LabelPlayer2.Height - 10);
+            m_BoldFont = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
+            m_NormalFont = new Font(m_LabelPlayer1.Font, FontStyle.Regular);
+
+            m_LabelPlayer1.Text = "Player1: 0";
+            m_LabelPlayer2.Text = "Player2: 0";
+
+            m_LabelPlayer1.AutoSize = true;
+            m_LabelPlayer2.AutoSize = true;
+
             this.Controls.Add(m_LabelPlayer1);
             this.Controls.Add(m_LabelPlayer2);
+
+            int yPosition = m_BoardButtons[m_BoardButtons.GetLength(0) - 1, 0].Bottom + 10;
+            int totalWidth = m_LabelPlayer1.Width + m_LabelPlayer2.Width + 3;
+            int player1LabelX = (this.ClientSize.Width - totalWidth) / 2;
+            int player2LabelX = player1LabelX + m_LabelPlayer1.Width + 3;
+
+            m_LabelPlayer1.Location = new Point(player1LabelX, yPosition);
+            m_LabelPlayer2.Location = new Point(player2LabelX, yPosition);
         }
 
-        public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score, bool i_IsPlayer1Turn)
+
+
+    public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score)
         {
-            //TODO: make this method to be better, no need to render all of them again everytime.
             m_LabelPlayer1.Text = $"{i_Player1Name}: {i_Player1Score}";
-            m_LabelPlayer1.Font = new Font(m_LabelPlayer1.Font, i_IsPlayer1Turn ? FontStyle.Bold : FontStyle.Regular);
-
             m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";
-            m_LabelPlayer2.Font = new Font(m_LabelPlayer2.Font, i_IsPlayer1Turn ? FontStyle.Regular : FontStyle.Bold);
+        }
 
-            // Adjust label locations after text changed
-            m_LabelPlayer2.Location = new Point(10 + m_LabelPlayer1.Width + 10, m_LabelPlayer2.Location.Y);
+        public void MakeCurrentPlayerLabelBold(bool i_IsPlayer1CurrentPlayer)
+        {
+            if(i_IsPlayer1CurrentPlayer)
+            {
+                m_LabelPlayer1.Font = m_BoldFont;
+                m_LabelPlayer2.Font = m_NormalFont;
+            }
+            else
+            {
+                m_LabelPlayer1.Font = m_NormalFont;
+                m_LabelPlayer2.Font = m_BoldFont;
+            }
         }
 
         private void Button_Click(object sender, EventArgs e)
@@ -94,7 +120,10 @@ namespace WindowsFormsFlippedTicTacToe
 
         public void UpdateCell(Cell i_Cell, eSymbols i_Symbol)
         {
-            //TODO: Should we add validation for Cell here?
+            if (i_Cell.Row >= m_BoardButtons.GetLength(0) || i_Cell.Column >= m_BoardButtons.GetLength(1))
+            {
+                throw new ArgumentException("The provided cell is out of the game board bounds.");
+            }
             ButtonBoard button = m_BoardButtons[i_Cell.Row, i_Cell.Column];
             button.Text = i_Symbol.ToString();
             button.Enabled = false;

@@ -14,6 +14,7 @@ namespace WindowsFormsFlippedTicTacToe
             this.Size = new Size(k_ButtonSize, k_ButtonSize);
             this.Location = i_Location;
             this.Tag = new Cell((uint)i_Row, (uint)i_Col);
+            this.TabStop = false;
         }
     }
 }
