@@ -90,7 +90,7 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";
         }
 
-        public void MakeCurrentPlayerLabelBold(bool i_IsPlayer1CurrentPlayer)
+        public void MakePlayer1LabelBold(bool i_IsPlayer1CurrentPlayer)
         {
             if(i_IsPlayer1CurrentPlayer)
             {
