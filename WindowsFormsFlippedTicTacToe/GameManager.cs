@@ -14,8 +14,9 @@ namespace WindowsFormsFlippedTicTacToe
             r_GameEngine = new GameEngine();
             r_FormGame = new FormGame();
             r_FormGame.ButtonClicked += handleButtonClicked;
-            r_GameEngine.MoveMade += handleMoveMade;
+            r_GameEngine.PlacedSymbol += handleSymbolPlacement;
             r_GameEngine.GameFinished += handleGameFinished;
+            r_GameEngine.TurnFinished += handleTurnFinished;
         }
 
         public void Run()
@@ -49,26 +50,8 @@ namespace WindowsFormsFlippedTicTacToe
         private void createGameBoard()
         {
             r_FormGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
-            r_FormGame.MakeCurrentPlayerLabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+            r_FormGame.MakePlayer1LabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
             updatePlayerNamesAndScores();
-        }
-
-        private void handleButtonClicked(Cell i_Cell)
-        {
-            r_GameEngine.MakeMove(i_Cell);
-
-            if(r_GameEngine.Player2.IsComputer && r_GameEngine.GameStatus == eGameStatus.InProgress)
-            {
-                r_GameEngine.MakeRandomMove();
-            }
-
-            if(r_GameEngine.GameStatus != eGameStatus.InProgress)
-            {
-                restartGame();
-            }
-
-            r_FormGame.MakeCurrentPlayerLabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
-            r_FormGame.UpdatePlayerNamesAndScores(r_GameEngine.Player1.Name, r_GameEngine.Player1.Score, r_GameEngine.Player2.Name, r_GameEngine.Player2.Score);
         }
 
         private void restartGame()
@@ -77,9 +60,47 @@ namespace WindowsFormsFlippedTicTacToe
             r_FormGame.ResetBoardButtons();
         }
 
-        private void handleMoveMade(Cell i_Cell)
+        private bool checkIfComputerTurn()
+        {
+            return r_GameEngine.CurrentPlayer == r_GameEngine.Player2 && r_GameEngine.Player2.IsComputer;
+        }
+
+        private void handleTurnFinished()
+        {
+            bool isComputerTurn = checkIfComputerTurn();
+            if(isComputerTurn)
+            {
+                r_GameEngine.MakeRandomMove();
+            }
+        }
+
+        private void handleSymbolPlacement(Cell i_Cell)
         {
             r_FormGame.UpdateCell(i_Cell, r_GameEngine.CurrentPlayer.Symbol);
+        }
+
+        private void handleButtonClicked(Cell i_Cell)
+        {
+            r_GameEngine.MakeMove(i_Cell);
+            r_FormGame.MakePlayer1LabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+        }
+
+        private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
+        {
+            string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
+            string caption = this.generateFinishCaption(i_GameStatus);
+
+            DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
+
+            if(result == DialogResult.Yes)
+            {
+                restartGame();
+                updatePlayerNamesAndScores();
+            }
+            else
+            {
+                r_FormGame.Close();
+            }
         }
 
         private void updatePlayerNamesAndScores()
@@ -95,19 +116,6 @@ namespace WindowsFormsFlippedTicTacToe
                 player1Score,
                 player2Name,
                 player2Score);
-        }
-
-        private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
-        {
-            string msg = this.generateFinishMsg(i_GameStatus, i_Winner);
-            string caption = this.generateFinishCaption(i_GameStatus);
-
-            DialogResult result = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo);
-
-            if(result == DialogResult.No)
-            {
-                r_FormGame.Close();
-            }
         }
 
         private string generateFinishMsg(eGameStatus i_GameStatus, Player i_Winner)

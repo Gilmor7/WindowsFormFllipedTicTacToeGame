@@ -13,8 +13,9 @@
             private Player m_CurrentPlayer = null;
             private eGameStatus m_GameStatus = eGameStatus.InProgress;
 
-            public event Action<Cell> MoveMade;
+            public event Action<Cell> PlacedSymbol;
             public event Action<eGameStatus, Player> GameFinished;
+            public event Action TurnFinished;
 
             public Player CurrentPlayer
             {
@@ -132,6 +133,7 @@
                 else
                 {
                     switchCurrentPlayer();
+                    OnTurnFinished();
                 }
             }
 
@@ -222,7 +224,12 @@
 
             protected virtual void OnMoveMade(Cell i_Cell)
             {
-                MoveMade?.Invoke(i_Cell);
+                PlacedSymbol?.Invoke(i_Cell);
+            }
+
+            protected virtual void OnTurnFinished()
+            {
+                TurnFinished?.Invoke();
             }
         }
     }
