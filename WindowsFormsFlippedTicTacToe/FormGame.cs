@@ -81,10 +81,8 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer1.Location = new Point(player1LabelX, yPosition);
             m_LabelPlayer2.Location = new Point(player2LabelX, yPosition);
         }
-
-
-
-    public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score)
+        
+        public void UpdatePlayerNamesAndScores(string i_Player1Name, uint i_Player1Score, string i_Player2Name, uint i_Player2Score)
         {
             m_LabelPlayer1.Text = $"{i_Player1Name}: {i_Player1Score}";
             m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";

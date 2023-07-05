@@ -109,7 +109,6 @@ namespace WindowsFormsFlippedTicTacToe
             uint player1Score = r_GameEngine.Player1.Score;
             string player2Name = r_GameEngine.Player2.Name;
             uint player2Score = r_GameEngine.Player2.Score;
-            bool isPlayer1Turn = r_GameEngine.CurrentPlayer == r_GameEngine.Player1;
 
             r_FormGame.UpdatePlayerNamesAndScores(
                 player1Name,
