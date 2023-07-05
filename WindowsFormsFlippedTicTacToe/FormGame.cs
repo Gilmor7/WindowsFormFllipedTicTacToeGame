@@ -64,6 +64,9 @@ namespace WindowsFormsFlippedTicTacToe
             m_BoldFont = new Font(m_LabelPlayer1.Font, FontStyle.Bold);
             m_NormalFont = new Font(m_LabelPlayer1.Font, FontStyle.Regular);
 
+            m_LabelPlayer1.Font = m_BoldFont;
+            m_LabelPlayer2.Font = m_NormalFont;
+
             m_LabelPlayer1.Text = "Player1: 0";
             m_LabelPlayer2.Text = "Player2: 0";
 
@@ -88,18 +91,11 @@ namespace WindowsFormsFlippedTicTacToe
             m_LabelPlayer2.Text = $"{i_Player2Name}: {i_Player2Score}";
         }
 
-        public void MakePlayer1LabelBold(bool i_IsPlayer1CurrentPlayer)
+        public void SwitchPlayersBoldLabel()
         {
-            if(i_IsPlayer1CurrentPlayer)
-            {
-                m_LabelPlayer1.Font = m_BoldFont;
-                m_LabelPlayer2.Font = m_NormalFont;
-            }
-            else
-            {
-                m_LabelPlayer1.Font = m_NormalFont;
-                m_LabelPlayer2.Font = m_BoldFont;
-            }
+            Font temp = m_LabelPlayer1.Font;
+            m_LabelPlayer1.Font = m_LabelPlayer2.Font;
+            m_LabelPlayer2.Font = temp;
         }
 
         private void Button_Click(object sender, EventArgs e)

@@ -50,7 +50,6 @@ namespace WindowsFormsFlippedTicTacToe
         private void createGameBoard()
         {
             r_FormGame.CreateGameBoard((int)r_GameEngine.GameBoard.Size);
-            r_FormGame.MakePlayer1LabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
             updatePlayerNamesAndScores();
         }
 
@@ -82,7 +81,7 @@ namespace WindowsFormsFlippedTicTacToe
         private void handleButtonClicked(Cell i_Cell)
         {
             r_GameEngine.MakeMove(i_Cell);
-            r_FormGame.MakePlayer1LabelBold(r_GameEngine.CurrentPlayer == r_GameEngine.Player1);
+            r_FormGame.SwitchPlayersBoldLabel();
         }
 
         private void handleGameFinished(eGameStatus i_GameStatus, Player i_Winner)
